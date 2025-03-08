@@ -10,7 +10,7 @@
 
 #define MINECRAFT_RHOOK(addr, name) real_##name = (decltype(real_##name))MinecraftPatcher::instance()->MinecraftRHook((void*)addr, (void*)&my_##name);
 #define MINECRAFT_HOOK(addr, func)  uint32_t hook_##func[4] = { 0x3D800000UL | ((uint32_t)&_hook_##func >> 16), 0x618C0000UL | ((uint32_t)&_hook_##func & 0xFFFF), 0x7D8903A6UL, 0x4E800421UL }; \
-                                    MinecraftPatcher::instance()->MinecraftHook((void*)addr, hook_##func, sizeof(hook_##func));
+                                    MinecraftPatcher::instance()->Hook((void*)addr, hook_##func, sizeof(hook_##func));
 
 #define MINECRAFT_EXECUTABLE_SPACE_START (0x0384CC20 + 0x10000)
 
@@ -42,6 +42,8 @@ private:
 
     int32_t nextAddr = MINECRAFT_EXECUTABLE_SPACE_START;
 };
+
+MinecraftDataProvider* MinecraftDataProvider::_instance = nullptr;
 
 class MinecraftPatcher {
 public:
